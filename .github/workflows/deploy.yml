@@ -71,7 +71,7 @@ jobs:
             cd ${{ secrets.VPS_TARGET_DIR }}
             
             # Install production dependencies only
-            npm ci --omit=dev
+            /home/mdshahin/.nvm/versions/node/v22.18.0/bin/npm ci --omit=dev
             
             # Set proper permissions
             chmod -R 755 .
