@@ -77,12 +77,12 @@ jobs:
             chmod -R 755 .
             
             # Restart application using PM2 with ecosystem config
-            pm2 reload ecosystem.config.js --update-env || pm2 start ecosystem.config.js
+            /home/mdshahin/.nvm/versions/node/v22.18.0/bin/pm2 reload ecosystem.config.js --update-env || /home/mdshahin/.nvm/versions/node/v22.18.0/bin/pm2 start ecosystem.config.js
             
             # Save PM2 process list
-            pm2 save
+            /home/mdshahin/.nvm/versions/node/v22.18.0/bin/pm2 save
             
             echo "Deployment completed successfully!"
             
             # Show app status
-            pm2 status
+            /home/mdshahin/.nvm/versions/node/v22.18.0/bin/pm2 status
