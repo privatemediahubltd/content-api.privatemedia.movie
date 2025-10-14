@@ -75,6 +75,7 @@ export class TMDBService {
       }
     }
 
+    
     const response = await this.axiosInstance.get(endpoint, {
       params: {
         page,

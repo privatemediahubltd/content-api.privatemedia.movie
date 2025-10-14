@@ -6,7 +6,7 @@ module.exports = {
         
         // Instance settings
         instances: 10,  // Use 'max' for cluster mode (number of CPU cores)
-        exec_mode: 'fork',  // Use 'cluster' for load balancing
+        exec_mode: 'cluster',  // Use 'cluster' for load balancing
         
         // Auto-restart settings
         watch: false,  // Set to true for development
