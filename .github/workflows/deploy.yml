@@ -1,75 +1,26 @@
-name: Build and Deploy NestJS App
-
+name: Deploy Content Server
 on:
   push:
     branches:
-      - main  # Change to your default branch if different
-  pull_request:
-    branches:
       - main
-  workflow_dispatch:  # Allows manual trigger
-
 jobs:
-  build-and-deploy:
+  build:
+    if: true
+    name: Deploy Backend
     runs-on: ubuntu-latest
-    
     steps:
-      # 1. Checkout code
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # 2. Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Execute remote SSH commands using password
+        uses: appleboy/ssh-action@v1
         with:
-          node-version: '20'  # Adjust to your Node version
-          cache: 'npm'  # Use 'yarn' or 'pnpm' if you use those
-
-      # 3. Install dependencies
-      - name: Install dependencies
-        run: npm ci
-
-      # 5. Build NestJS app
-      - name: Build NestJS app
-        run: npm run build
-
-      # 6. Create deployment package
-      - name: Create deployment package
-        run: |
-          mkdir -p deploy
-          cp -r dist deploy/
-          cp package*.json deploy/
-          cp ecosystem.config.js deploy/
-          cp -r node_modules deploy/ 2>/dev/null || echo "Skipping node_modules copy"
-          # Copy other necessary files
-          [ -f .env.production ] && cp .env.production deploy/.env || echo "No .env.production found"
-          [ -d public ] && cp -r public deploy/ || echo "No public folder"
-
-      # 7. Deploy to VPS
-      - name: Deploy to VPS via SSH
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
-          source: "deploy/*"
-          target: ${{ secrets.VPS_TARGET_DIR }}
-          strip_components: 1
-          rm: false
-          overwrite: true
-
-      # 8. Install production dependencies and restart app
-      - name: Install dependencies and restart application
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
           script: |
-            cd ${{ secrets.VPS_TARGET_DIR }}
-            
-            # Install production dependencies only
-            /home/mdshahin/.nvm/versions/node/v22.18.0/bin/npm ci --omit=dev
-            a
+            cd /www/wwwroot/servers-msjmedia/content-api
+            eval $(ssh-agent)
+            ssh-add /home/mdshahin/.ssh/movie_site_deploy_key
+            git pull
+            /home/mdshahin/.nvm/versions/node/v22.18.0/bin/npm install
+            /home/mdshahin/.nvm/versions/node/v22.18.0/bin/npm run build
+            /home/mdshahin/.nvm/versions/node/v22.18.0/bin/pm2 4
