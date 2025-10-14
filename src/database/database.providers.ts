@@ -17,12 +17,6 @@ export const databaseProviders = [
         password: configService.get<string>('SUPABASE_DB_PASSWORD'),
         logging: false,
         models: [Cache],
-        dialectOptions: {
-          ssl: {
-            require: true,
-            rejectUnauthorized: false,
-          },
-        },
       });
 
       await sequelize.authenticate();

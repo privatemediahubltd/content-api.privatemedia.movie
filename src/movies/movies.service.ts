@@ -9,6 +9,7 @@ import {
   TMDBGenre,
   MovieSuggestType,
   SortOrder,
+  ListQueryParams,
 } from '../types/tmdb.types';
 
 @Injectable()
@@ -23,9 +24,12 @@ export class MoviesService {
   async getMoviesList(
     suggest?: MovieSuggestType,
     sort?: SortOrder,
+    query?: ListQueryParams,
     page: number = 1,
   ): Promise<TMDBPaginationResponse<TMDBMovieListItem>> {
-    const cacheKey = `movies:list:${suggest || 'popular'}:${sort || 'desc'}:${page}`;
+    const cacheKey = `movies:list:${suggest || 'popular'}:${sort || 'desc'}:${page}:${query?.genres}`;
+
+    console.log(cacheKey)
 
     return this.cacheService.getOrSet(
       cacheKey,
@@ -33,7 +37,7 @@ export class MoviesService {
         this.logger.debug(
           `Fetching movies list: suggest=${suggest}, page=${page}`,
         );
-        const data = await this.tmdbService.getMoviesList(suggest, page);
+        const data = await this.tmdbService.getMoviesList(suggest, query, page);
 
         // Apply sorting if specified
         if (sort === 'asc') {
@@ -44,7 +48,7 @@ export class MoviesService {
 
         return data;
       },
-      { ttl: 3600 }, // 1 hour cache
+      { ttl: 1 }, // 1 minute cache
     );
   }
 

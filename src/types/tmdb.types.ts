@@ -172,6 +172,7 @@ export type SearchType = 'movie' | 'tv' | 'multi';
 export interface ListQueryParams {
   suggest?: MovieSuggestType | TVShowSuggestType;
   sort?: SortOrder;
+  genres?: string;
   page?: number;
 }
 

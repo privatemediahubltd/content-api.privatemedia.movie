@@ -18,6 +18,7 @@ export class MoviesController {
     return this.moviesService.getMoviesList(
       query.suggest,
       query.sort,
+      query,
       query.page,
     );
   }

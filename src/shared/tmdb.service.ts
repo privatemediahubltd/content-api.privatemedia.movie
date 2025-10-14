@@ -13,6 +13,7 @@ import {
   MovieSuggestType,
   TVShowSuggestType,
   SearchType,
+  ListQueryParams,
 } from '../types/tmdb.types';
 
 @Injectable()
@@ -28,8 +29,8 @@ export class TMDBService {
 
     this.axiosInstance = axios.create({
       baseURL: 'https://api.themoviedb.org/3',
-      headers : {
-        Authorization : `Bearer ${accessToken}`
+      headers: {
+        Authorization: `Bearer ${accessToken}`
       },
       timeout: 10000,
     });
@@ -50,9 +51,10 @@ export class TMDBService {
   // Movies endpoints
   async getMoviesList(
     suggest?: MovieSuggestType,
+    query?: ListQueryParams,
     page: number = 1,
   ): Promise<TMDBPaginationResponse<TMDBMovieListItem>> {
-    let endpoint = 'movie/popular';
+    let endpoint = 'discover/movie';
 
     if (suggest) {
       switch (suggest) {
@@ -66,15 +68,21 @@ export class TMDBService {
           endpoint = 'movie/top_rated';
           break;
         case 'popular':
-        default:
           endpoint = 'movie/popular';
+        default:
+          endpoint = 'discover/movie'
           break;
       }
     }
 
     const response = await this.axiosInstance.get(endpoint, {
-      params: { page },
+      params: {
+        page,
+        with_genres: query?.genres
+      },
     });
+
+    console.log(response.config)
 
     return response.data;
   }
