@@ -18,7 +18,8 @@ export class TVShowsController {
     return this.tvShowsService.getTVShowsList(
       query.suggest,
       query.sort,
-      query.page,
+      query.genres,
+      Number(query.page),
     );
   }
 

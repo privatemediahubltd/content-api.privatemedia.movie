@@ -23,6 +23,7 @@ export class TVShowsService {
   async getTVShowsList(
     suggest?: TVShowSuggestType,
     sort?: SortOrder,
+    genres?: string,
     page: number = 1,
   ): Promise<TMDBPaginationResponse<TMDBTVShowListItem>> {
     const cacheKey = `tv-shows:list:${suggest || 'popular'}:${sort || 'desc'}:${page}`;
@@ -33,7 +34,7 @@ export class TVShowsService {
         this.logger.debug(
           `Fetching TV shows list: suggest=${suggest}, page=${page}`,
         );
-        const data = await this.tmdbService.getTVShowsList(suggest, page);
+        const data = await this.tmdbService.getTVShowsList(suggest, genres, page);
 
         // Apply sorting if specified
         if (sort === 'asc') {

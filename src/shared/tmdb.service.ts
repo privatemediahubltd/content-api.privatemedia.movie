@@ -75,7 +75,7 @@ export class TMDBService {
       }
     }
 
-    
+
     const response = await this.axiosInstance.get(endpoint, {
       params: {
         page,
@@ -134,9 +134,10 @@ export class TMDBService {
   // TV Shows endpoints
   async getTVShowsList(
     suggest?: TVShowSuggestType,
+    genres?: string,
     page: number = 1,
   ): Promise<TMDBPaginationResponse<TMDBTVShowListItem>> {
-    let endpoint = 'tv/popular';
+    let endpoint = 'discover/tv';
 
     if (suggest) {
       switch (suggest) {
@@ -147,14 +148,15 @@ export class TMDBService {
           endpoint = 'tv/top_rated';
           break;
         case 'popular':
-        default:
           endpoint = 'tv/popular';
+        default:
+          endpoint = 'discover/tv';
           break;
       }
     }
 
     const response = await this.axiosInstance.get(endpoint, {
-      params: { page },
+      params: { page, with_genres: genres },
     });
 
     return response.data;
