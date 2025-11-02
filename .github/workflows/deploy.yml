@@ -20,6 +20,8 @@ jobs:
             cd /www/wwwroot/servers-msjmedia/content-api
             eval $(ssh-agent)
             ssh-add /home/mdshahin/.ssh/movie_site_deploy_key
+            git reset --hard
+            git clean -fd
             git pull
             /home/mdshahin/.nvm/versions/node/v22.18.0/bin/npm install
             /home/mdshahin/.nvm/versions/node/v22.18.0/bin/npm run build
