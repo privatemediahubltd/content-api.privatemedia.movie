@@ -12,16 +12,6 @@ module.exports = {
       watch: false,
       max_memory_restart: '500M',
       
-      // Environment variables
-      env: {
-        NODE_ENV: 'production',
-        PORT: 9020,
-      },
-      env_production: {
-        NODE_ENV: 'production',  // Fixed: was 'development'
-        PORT: 9020,
-      },
-      
       // Logging
       error_file: './logs/movie-content-server-err.log',
       out_file: './logs/movie-content-server-out.log',
