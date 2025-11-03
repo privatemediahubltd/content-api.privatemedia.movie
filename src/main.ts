@@ -13,7 +13,8 @@ async function bootstrap() {
 
   try {
     const app = await NestFactory.create(AppModule);
-    app.use(morgan('combined', { stream: logStream }))
+    app.use(morgan('combined', { stream: logStream, }));
+    app.use(morgan('dev'));
     app.enableCors({
       origin:'*'
     })
