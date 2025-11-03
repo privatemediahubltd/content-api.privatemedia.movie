@@ -13,6 +13,7 @@ import { TcpModule } from './tcp/tcp.module';
 import { GuardsModule } from './guards/guards.module';
 import { ContentModule } from './content/content.module';
 import { StreamModule } from './stream/stream.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { StreamModule } from './stream/stream.module';
     GuardsModule,
     ContentModule,
     StreamModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
