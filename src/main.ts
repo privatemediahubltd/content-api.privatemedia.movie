@@ -1,6 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as morgan from 'morgan';
+
+const logStream = fs.createWriteStream(path.join(__dirname, '../logs/access.log'), { flags: 'a' });
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -8,6 +13,7 @@ async function bootstrap() {
 
   try {
     const app = await NestFactory.create(AppModule);
+    app.use(morgan('combined', { stream: logStream }))
     app.enableCors({
       origin:'*'
     })
