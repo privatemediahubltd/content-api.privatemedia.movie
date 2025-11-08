@@ -56,7 +56,7 @@ export class TMDBService {
   ): Promise<TMDBPaginationResponse<TMDBMovieListItem>> {
     let endpoint = 'discover/movie';
 
-    if (suggest) {
+    if (suggest && !query?.genres) {
       switch (suggest) {
         case 'now-playing':
           endpoint = 'movie/now_playing';
@@ -139,7 +139,7 @@ export class TMDBService {
   ): Promise<TMDBPaginationResponse<TMDBTVShowListItem>> {
     let endpoint = 'discover/tv';
 
-    if (suggest) {
+    if (suggest && !genres) {
       switch (suggest) {
         case 'on-air':
           endpoint = 'tv/on_the_air';
