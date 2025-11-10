@@ -33,28 +33,20 @@ export class MoviesController {
     return this.moviesService.getMovieDetails(id);
   }
 
-  @Get(':id/season/:season_number')
-  async getMovieSeasonDetails(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('season_number', ParseIntPipe) seasonNumber: number,
-  ) {
-    return this.moviesService.getMovieSeasonDetails(id, seasonNumber);
-  }
-
   @Get(':id/recommendations')
   async getMovieRecommendations(
     @Param('id', ParseIntPipe) id: number,
-    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('page') pageStr: string,
   ) {
-    return this.moviesService.getMovieRecommendations(id, page);
+    return this.moviesService.getMovieRecommendations(id, Number(pageStr)||1);
   }
 
   @Get(':id/similar')
   async getMovieSimilar(
     @Param('id', ParseIntPipe) id: number,
-    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('page') pageStr: string,
   ) {
-    return this.moviesService.getMovieSimilar(id, page);
+    return this.moviesService.getMovieSimilar(id, Number(pageStr)||1);
   }
 
   @Get(':id/credits')

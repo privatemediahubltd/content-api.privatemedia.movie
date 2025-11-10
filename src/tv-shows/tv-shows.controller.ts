@@ -44,17 +44,17 @@ export class TVShowsController {
   @Get(':id/recommendations')
   async getTVShowRecommendations(
     @Param('id', ParseIntPipe) id: number,
-    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('page') pageStr: string,
   ) {
-    return this.tvShowsService.getTVShowRecommendations(id, page);
+    return this.tvShowsService.getTVShowRecommendations(id, Number(pageStr)||1);
   }
 
   @Get(':id/similar')
   async getTVShowSimilar(
     @Param('id', ParseIntPipe) id: number,
-    @Query('page', ParseIntPipe) page: number = 1,
+    @Query('page') pageStr: string,
   ) {
-    return this.tvShowsService.getTVShowSimilar(id, page);
+    return this.tvShowsService.getTVShowSimilar(id, Number(pageStr)||1);
   }
 
   @Get(':id/credits')
