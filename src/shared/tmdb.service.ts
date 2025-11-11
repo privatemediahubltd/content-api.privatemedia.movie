@@ -134,12 +134,12 @@ export class TMDBService {
   // TV Shows endpoints
   async getTVShowsList(
     suggest?: TVShowSuggestType,
-    genres?: string,
+    query?: ListQueryParams,
     page: number = 1,
   ): Promise<TMDBPaginationResponse<TMDBTVShowListItem>> {
     let endpoint = 'discover/tv';
 
-    if (suggest && !genres) {
+    if (suggest && !query?.genres) {
       switch (suggest) {
         case 'on-air':
           endpoint = 'tv/on_the_air';
@@ -156,7 +156,7 @@ export class TMDBService {
     }
 
     const response = await this.axiosInstance.get(endpoint, {
-      params: { page, with_genres: genres },
+      params: { page, with_genres: query?.genres, sort_by: query?.sort_by },
     });
 
     return response.data;

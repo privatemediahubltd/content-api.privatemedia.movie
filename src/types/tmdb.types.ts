@@ -174,6 +174,7 @@ export interface ListQueryParams {
   sort?: SortOrder;
   genres?: string;
   page?: number;
+  sort_by?: string;
 }
 
 export interface SearchQueryParams extends ListQueryParams {

@@ -37,15 +37,8 @@ export class MoviesService {
         this.logger.debug(
           `Fetching movies list: suggest=${suggest}, page=${page}`,
         );
+        if(query) query.sort_by = sort
         const data = await this.tmdbService.getMoviesList(suggest, query, page);
-
-        // Apply sorting if specified
-        if (sort === 'asc') {
-          data.results.sort((a, b) => a.popularity - b.popularity);
-        } else if (sort === 'desc') {
-          data.results.sort((a, b) => b.popularity - a.popularity);
-        }
-
         return data;
       },
       { ttl: 1 }, // 1 minute cache

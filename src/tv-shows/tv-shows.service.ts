@@ -9,6 +9,7 @@ import {
   TMDBGenre,
   TVShowSuggestType,
   SortOrder,
+  ListQueryParams,
 } from '../types/tmdb.types';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class TVShowsService {
   constructor(
     private readonly tmdbService: TMDBService,
     private readonly cacheService: CacheService,
-  ) {}
+  ) { }
 
   async getTVShowsList(
     suggest?: TVShowSuggestType,
@@ -34,14 +35,10 @@ export class TVShowsService {
         this.logger.debug(
           `Fetching TV shows list: suggest=${suggest}, page=${page}`,
         );
-        const data = await this.tmdbService.getTVShowsList(suggest, genres, page);
-
-        // Apply sorting if specified
-        if (sort === 'asc') {
-          data.results.sort((a, b) => a.popularity - b.popularity);
-        } else if (sort === 'desc') {
-          data.results.sort((a, b) => b.popularity - a.popularity);
-        }
+        const data = await this.tmdbService.getTVShowsList(suggest, {
+          genres: genres || undefined,
+          sort_by: sort || undefined,
+        }, page);
 
         return data;
       },
