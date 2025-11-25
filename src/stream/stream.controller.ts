@@ -46,7 +46,7 @@ export class StreamController {
         const link = await this.streamService.getMovieStreamEmbed(id);
         console.log(link)
         return {
-            url: link,
+            url: link || null,
             statusCode: 200
         }
     }
@@ -61,7 +61,7 @@ export class StreamController {
     ) {
         const link = await this.streamService.getTVShowStreamEmbed(id, seasonNumber, episodeNumber);
         return {
-            url: link,
+            url: link || null,
             statusCode: 200
         }
     }
