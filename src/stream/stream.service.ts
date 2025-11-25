@@ -48,7 +48,7 @@ export class StreamService {
             fullUrl.pathname = embedUrl || '';
             return fullUrl.href;
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 
