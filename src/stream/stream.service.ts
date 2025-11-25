@@ -44,6 +44,7 @@ export class StreamService {
             const url = new URL(`${StreamService.BASE_URL}${StreamService.ACCESS_KEY}/movie/${id}`);
             console.log(url.href)
             const response = await axios.get(url.href);
+            console.log(response.data)
             const embedUrl = await this.puppeterService.getEmbedMasterUrl(response.data);
             const fullUrl = new URL(StreamService.BASE_PLAYER);
             fullUrl.pathname = embedUrl || '';
