@@ -61,10 +61,21 @@ export class StreamService {
 
     async getTVShowStreamEmbed(id: string, seasonNumber: number, episodeNumber: number) {
         const url = new URL(`${StreamService.BASE_URL}${StreamService.ACCESS_KEY}/tv/${id}/${seasonNumber}/${episodeNumber}`);
-        const response = await axios.get(url.href);
-        const embedUrl = await this.puppeterService.getEmbedMasterUrl(response.data);
-        const fullUrl = new URL(StreamService.BASE_PLAYER);
-        fullUrl.pathname = embedUrl || '';
-        return fullUrl.href;
+        try {
+            console.log(url.href)
+            const response = await axios.get(url.href, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    referer: StreamService.BASE_URL
+                },
+            });
+            console.log(response.data)
+            const embedUrl = await this.puppeterService.getEmbedMasterUrl(response.data);
+            const fullUrl = new URL(StreamService.BASE_PLAYER);
+            fullUrl.pathname = embedUrl || '';
+            return fullUrl.href;
+        } catch (error) {
+            return url.href
+        }
     }
 }
